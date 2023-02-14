@@ -95,12 +95,6 @@ public static class UpdateHandlers
         }
         var action = messageText.Split(' ')[0] switch
         {
-            "/start" => Start(botClient, message),
-            "/valuation" => Valuation(botClient, message),
-            "/trx" => ConvertCoinTRX(botClient, message),
-            "/trx_price" => PriceTRX(botClient, message),
-            "绑定波场地址" => BindAddress(botClient, message),
-            "解绑波场地址" => UnBindAddress(botClient, message),
             "查询余额" => QueryAccount(botClient, message),
             _ => Usage(botClient, message)
         };
@@ -108,10 +102,12 @@ public static class UpdateHandlers
         async Task<Message> QueryAccount(ITelegramBotClient botClient, Message message)
         {
             if (message.From == null) return message;
-            var from = message.From;
-            var UserId = message.Chat.Id;
-
-            if (UserId != AdminUserId) return message;
+            if (message.Text is not { } messageText)
+                return message;
+            var address = messageText.Split(' ').Last();
+            if (address.StartsWith("T") && address.Length == 34)
+                var from = message.From;
+                var UserId = message.Chat.Id;
 
             var _myTronConfig = provider.GetRequiredService<IOptionsSnapshot<MyTronConfig>>();
             var _wallet = provider.GetRequiredService<IWalletClient>();
@@ -352,7 +348,7 @@ USDT： <b>{USDT}</b>
                 return await ValuationAction(botClient, message, trxPrice, Currency.TRX, Currency.USDT);
             }
             return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                        text: "未知输入！",
+                                                        text: "",
                                                         parseMode: ParseMode.Html,
                                                         replyMarkup: new ReplyKeyboardRemove());
         }

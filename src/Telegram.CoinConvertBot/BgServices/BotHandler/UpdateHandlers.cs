@@ -102,10 +102,6 @@ public static class UpdateHandlers
         async Task<Message> QueryAccount(ITelegramBotClient botClient, Message message)
         {
             if (message.From == null) return message;
-            if (message.Text is not { } messageText)
-                return message;
-            var address = messageText.Split(' ').Last();
-            if (address.StartsWith("T") && address.Length == 34)
             var from = message.From;
             var UserId = message.Chat.Id;
 

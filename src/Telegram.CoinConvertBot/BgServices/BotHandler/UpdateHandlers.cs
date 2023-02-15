@@ -95,6 +95,20 @@ public static class UpdateHandlers
         }
         var action = messageText.Split(' ')[0] switch
         {
+            "/start" => PriceTRX(botClient, message),
+            "/start@zhuchkdskbot" => PriceTRX(botClient, message),
+            "/valuation" => Valuation(botClient, message),
+            "/valuation@zhuchkdskbot" => Valuation(botClient, message),
+            "/trx" => ConvertCoinTRX(botClient, message),
+            "/trx@zhuchkdskbot" => ConvertCoinTRX(botClient, message),
+            "trx" => ConvertCoinTRX(botClient, message),
+            "兑换" => PriceTRX(botClient, message),
+            "/trx_price" => PriceTRX(botClient, message),
+            "/trx_price@zhuchkdskbot" => PriceTRX(botClient, message),
+            "汇率" => PriceTRX(botClient, message),
+            "地址" => PriceTRX(botClient, message),
+            "绑定波场地址" => BindAddress(botClient, message),
+            "解绑波场地址" => UnBindAddress(botClient, message),
             "查询余额" => QueryAccount(botClient, message),
             _ => Usage(botClient, message)
         };
